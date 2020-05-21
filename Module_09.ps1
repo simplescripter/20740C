@@ -15,15 +15,19 @@ $creds = Get-Credential -UserName "adatum\administrator" -Message "Enter the adm
 
 # Give the VMs a chance to start
 
-Start-Sleep 15
+Start-Sleep 20
 
 # Install Hyper-V and wait for the reboot
 
 Invoke-Command -VMName $vms {
     Install-WindowsFeature Failover-Clustering,Hyper-V,Hyper-V-Tools,Hyper-V-PowerShell -Restart -IncludeManagementTools
 } -Credential $creds
-Write-Host "Waiting for VMs to restart..." -BackgroundColor DarkCyan
-Sleep 90
+Write-Host "Waiting for VMs to restart..." -BackgroundColor DarkCyan -NoNewline
+For($i=1;$i -le 120;$i++){
+    Write-Host '.' -BackgroundColor DarkCyan -NoNewline
+    Sleep 1
+}
+Write-Host ''
 
 Invoke-Command -VMName $vms {
     Set-Service -Name msiscsi -StartupType Automatic
@@ -46,7 +50,3 @@ Invoke-Command -VMName 20740C-LON-NVHOST3 {
     New-Cluster -Name 'VMCluster' -StaticAddress '172.16.0.126' -Node LON-NVHOST3,LON-NVHOST4
 } -Credential $creds
 
-
-
-	#Add a disk to Cluster Shared Volume
-	#If necessary, transfer CSV resource to LON-NVHOST3
