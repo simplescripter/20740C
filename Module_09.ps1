@@ -1,4 +1,4 @@
-﻿# Run the following code on LON-HOST2
+﻿# Run the following code on LON-HOST2 in MOC 20740C Module 9 Lab to prepare the environment
 
 #Enable nested virtualization on LON-NVHOST3 and LON-NVHOST4:
 $vms = '20740C-LON-NVHOST3','20740C-LON-NVHOST4'
